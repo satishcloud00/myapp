@@ -31,10 +31,10 @@ pipeline {
         }
 
         stage('Push Image') {
-            steps {
-                sh 'docker tag myapp:v1 satishcloud00/myapp:v1'
-                sh 'docker push satishcloud00/myapp:v1'
-            }
-        }
+          steps {
+             sh 'docker tag myapp:v1 satishvasre/myapp:v1'
+             sh 'docker push satishvasre/myapp:v1'
+    }
+}
     }
 }
