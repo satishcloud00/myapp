@@ -5,7 +5,8 @@ pipeline {
 
         stage('Clone') {
             steps {
-                git 'https://github.com/USERNAME/REPOSITORY.git'
+                git branch: 'main',
+                    url: 'https://github.com/satishcloud00/myapp.git'
             }
         }
 
@@ -17,14 +18,22 @@ pipeline {
 
         stage('Docker Login') {
             steps {
-                sh 'docker login -u YOUR_USERNAME -p YOUR_PASSWORD'
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-creds',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_TOKEN'
+                    )
+                ]) {
+                    sh 'echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin'
+                }
             }
         }
 
         stage('Push to Docker Hub') {
             steps {
-                sh 'docker tag myapp:v1 YOUR_USERNAME/myapp:v1'
-                sh 'docker push YOUR_USERNAME/myapp:v1'
+                sh 'docker tag myapp:v1 satishcloud00/myapp:v1'
+                sh 'docker push satishcloud00/myapp:v1'
             }
         }
     }
