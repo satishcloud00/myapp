@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -10,22 +9,22 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Docker Build') {
             steps {
                 sh 'docker build -t myapp:v1 .'
             }
         }
 
-        stage('Login to Docker Hub') {
+        stage('Docker Login') {
             steps {
-                sh 'docker login -u YOUR_DOCKER_USERNAME -p YOUR_DOCKER_PASSWORD'
+                sh 'docker login -u YOUR_USERNAME -p YOUR_PASSWORD'
             }
         }
 
-        stage('Push Image') {
+        stage('Push to Docker Hub') {
             steps {
-                sh 'docker tag myapp:v1 YOUR_DOCKER_USERNAME/myapp:v1'
-                sh 'docker push YOUR_DOCKER_USERNAME/myapp:v1'
+                sh 'docker tag myapp:v1 YOUR_USERNAME/myapp:v1'
+                sh 'docker push YOUR_USERNAME/myapp:v1'
             }
         }
     }
