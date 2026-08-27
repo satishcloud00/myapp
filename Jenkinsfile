@@ -25,16 +25,18 @@ pipeline {
                         passwordVariable: 'DOCKER_TOKEN'
                     )
                 ]) {
-                    sh 'echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin'
+                    sh '''
+                        echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
+                    '''
                 }
             }
         }
 
         stage('Push Image') {
-          steps {
-             sh 'docker tag myapp:v1 satishvasre/myapp:v1'
-             sh 'docker push satishvasre/myapp:v1'
-    }
-}
+            steps {
+                sh 'docker tag myapp:v1 satishvasre/myapp:v1'
+                sh 'docker push satishvasre/myapp:v1'
+            }
+        }
     }
 }
