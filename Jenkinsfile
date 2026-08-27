@@ -1,34 +1,31 @@
+
 pipeline {
     agent any
 
-    environment {
-        IMAGE_NAME = "satishvasre/myapp"
-        IMAGE_TAG = "v1"
-    }
-
     stages {
 
-        stage('Docker Build') {
+        stage('Clone') {
             steps {
-                sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
+                git 'https://github.com/USERNAME/REPOSITORY.git'
             }
         }
 
-        stage('Docker Login') {
+        stage('Build Docker Image') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-creds',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
-                }
+                sh 'docker build -t myapp:v1 .'
             }
         }
 
-        stage('Docker Push') {
+        stage('Login to Docker Hub') {
             steps {
-                sh 'docker push $IMAGE_NAME:$IMAGE_TAG'
+                sh 'docker login -u YOUR_DOCKER_USERNAME -p YOUR_DOCKER_PASSWORD'
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                sh 'docker tag myapp:v1 YOUR_DOCKER_USERNAME/myapp:v1'
+                sh 'docker push YOUR_DOCKER_USERNAME/myapp:v1'
             }
         }
     }
