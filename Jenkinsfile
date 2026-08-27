@@ -21,8 +21,8 @@ pipeline {
                 withCredentials([
                     usernamePassword(
                         credentialsId: 'dockerhub-creds',
-                        usernameVariable: 'DOCKER_USER',
-                        passwordVariable: 'DOCKER_TOKEN'
+                        usernameVariable: 'satishvasre',
+                        passwordVariable: 'dckr_pat_91HM4Nwyr6ezWZulBV9D6TXpmbk'
                     )
                 ]) {
                     sh 'echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin'
@@ -30,7 +30,7 @@ pipeline {
             }
         }
 
-        stage('Push to Docker Hub') {
+        stage('Push Image') {
             steps {
                 sh 'docker tag myapp:v1 satishcloud00/myapp:v1'
                 sh 'docker push satishcloud00/myapp:v1'
