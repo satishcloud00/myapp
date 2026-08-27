@@ -17,18 +17,18 @@ pipeline {
         }
 
         stage('Docker Login') {
-            steps {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'dockerhub-creds-new',
-                        usernameVariable: 'satishvasre',
-                        passwordVariable: 'dckr_pat_91HM4Nwyr6ezWZulBV9D6TXpmbk'
-                    )
-                ]) {
-                    sh 'echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin'
-                }
-            }
+           steps {
+               withCredentials([
+                usernamePassword(
+                credentialsId: 'dockerhub-creds-new',
+                usernameVariable: 'DOCKER_USER',
+                passwordVariable: 'DOCKER_TOKEN'
+            )
+        ]) {
+            sh 'echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin'
         }
+    }
+}
 
         stage('Push Image') {
             steps {
